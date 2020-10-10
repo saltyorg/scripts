@@ -23,14 +23,6 @@
 readonly PIP="9.0.3"
 readonly ANSIBLE="2.5.14"
 
-## AppVeyor
-if [ "$SUDO_USER" = "appveyor" ]; then
-    rm /etc/apt/sources.list.d/*
-    rm /etc/apt/sources.list
-    curl https://cloudbox.works/scripts/apt-sources/xenial.txt | tee /etc/apt/sources.list
-    apt-get update
-fi
-
 ## Environmental Variables
 export DEBIAN_FRONTEND=noninteractive
 
