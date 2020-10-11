@@ -60,7 +60,8 @@ apt-get install -y --reinstall \
     python3-dev \
     python3-pip \
     python-dev \
-    python-pip
+    python-pip \
+    python-apt
 
 ## Install pip3 Dependencies
 python3 -m pip install --disable-pip-version-check --upgrade --force-reinstall \
