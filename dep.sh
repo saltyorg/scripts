@@ -20,7 +20,8 @@
 #################################################################################
 
 ## Constants
-readonly PIP="9.0.3"
+readonly PIP="20.3.4"
+readonly PIP3="21.0.1"
 readonly ANSIBLE="2.5.14"
 
 ## Environmental Variables
@@ -64,21 +65,21 @@ apt-get install -y --reinstall \
     python-apt
 
 ## Install pip3 Dependencies
-python3 -m pip install --disable-pip-version-check --upgrade --force-reinstall \
-    pip==${PIP}
-python3 -m pip install --disable-pip-version-check --upgrade --force-reinstall \
+python3 -m pip install --disable-pip-version-check --upgrade \
+    pip==${PIP3}
+python3 -m pip install --disable-pip-version-check --upgrade \
     setuptools
-python3 -m pip install --disable-pip-version-check --upgrade --force-reinstall \
+python3 -m pip install --disable-pip-version-check --upgrade \
     pyOpenSSL \
     requests \
     netaddr
 
 ## Install pip2 Dependencies
-python -m pip install --disable-pip-version-check --upgrade --force-reinstall \
+python -m pip install --disable-pip-version-check --upgrade \
     pip==${PIP}
-python -m pip install --disable-pip-version-check --upgrade --force-reinstall \
+python -m pip install --disable-pip-version-check --upgrade \
     setuptools
-python -m pip install --disable-pip-version-check --upgrade --force-reinstall \
+python -m pip install --disable-pip-version-check --upgrade \
     pyOpenSSL \
     requests \
     netaddr \
