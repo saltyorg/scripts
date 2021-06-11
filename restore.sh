@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 ######################################################################################
 # Title:         Cloudbox Restore Service: Restore Script                            #
-# Author(s):     l3uddz, desimaniac                                                  #
-# URL:           https://github.com/Cloudbox/Cloudbox                                #
+# Author(s):     l3uddz, desimaniac, saltydk                                         #
+# URL:           https://github.com/Cloudbox2/Cloudbox                               #
 # Description:   Restores encrypted config files from Cloudbox Restore Service.      #
 # --                                                                                 #
 #             Part of the Cloudbox project: https://cloudbox.works                   #
@@ -36,8 +36,8 @@ ignore="[ ${red}IGNORE${nc} ]"
 echo -e "
 $green┌─────────────────────────────────────────────────────────────────────┐
 $green│ Title:         Cloudbox Restore Service: Restore Script             │
-$green│ Author(s):     l3uddz, desimaniac                                   │
-$green│ URL:           https://github.com/cloudbox/cloudbox                 │
+$green│ Author(s):     l3uddz, desimaniac, salty                            │
+$green│ URL:           https://github.com/cloudbox2/cloudbox                │
 $green│ Description:   Restores encrypted config files from the             │
 $green│                Cloudbox Restore Service.                            │
 $green├─────────────────────────────────────────────────────────────────────┤
