@@ -10,7 +10,7 @@
 ######################################################################################
 
 # vars
-files=( "ansible_vault" "ansible.cfg" "accounts.yml" "settings.yml" "adv_settings.yml" "backup_config.yml" "rclone.conf")
+files=( "ansible_vault" "ansible.cfg" "accounts.yml" "settings.yml" "adv_settings.yml" "backup_config.yml" "rclone.conf" "localhost.yml")
 restore="crs.saltbox.dev"
 folder="$HOME/.restore_service_tmp"
 green="\e[1;32m"
