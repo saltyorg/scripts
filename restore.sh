@@ -1,28 +1,17 @@
 #!/usr/bin/env bash
 ######################################################################################
-# Title:         Cloudbox Restore Service: Restore Script                            #
+# Title:         Saltbox Restore Service: Restore Script                             #
 # Author(s):     l3uddz, desimaniac, saltydk                                         #
-# URL:           https://github.com/Cloudbox2/Cloudbox                               #
-# Description:   Restores encrypted config files from Cloudbox Restore Service.      #
+# URL:           https://github.com/saltyorg/saltbox                                 #
+# Description:   Restores encrypted config files from Saltbox Restore Service.       #
 # --                                                                                 #
-#             Part of the Cloudbox project: https://cloudbox.works                   #
 ######################################################################################
 #                     GNU General Public License v3.0                                #
-######################################################################################
-# Usage:                                                                             #
-# ======                                                                             #
-# Simple:                                                                            #
-# curl -s https://cloudbox.works/scripts/restore.sh | bash -s 'USER' 'PASS'          #
-# wget -qO- https://cloudbox.works/scripts/restore.sh | bash -s 'USER' 'PASS'        #
-#                                                                                    #
-# Custom Cloudbox Path:                                                              #
-# curl -s https://cloudbox.works/scripts/restore.sh | bash -s 'USER' 'PASS' 'PATH'   #
-# wget -qO- https://cloudbox.works/scripts/restore.sh | bash -s 'USER' 'PASS' 'PATH' #
 ######################################################################################
 
 # vars
 files=( "ansible_vault" "ansible.cfg" "accounts.yml" "settings.yml" "adv_settings.yml" "backup_config.yml" "rclone.conf")
-restore="restore.cloudbox.works"
+restore="crs.saltbox.dev"
 folder="$HOME/.restore_service_tmp"
 green="\e[1;32m"
 red="\e[1;31m"
@@ -35,13 +24,11 @@ ignore="[ ${red}IGNORE${nc} ]"
 
 echo -e "
 $green┌─────────────────────────────────────────────────────────────────────┐
-$green│ Title:         Cloudbox Restore Service: Restore Script             │
+$green│ Title:         Saltbox Restore Service: Restore Script              │
 $green│ Author(s):     l3uddz, desimaniac, salty                            │
-$green│ URL:           https://github.com/cloudbox2/cloudbox                │
+$green│ URL:           https://github.com/saltyorg/saltbox                  │
 $green│ Description:   Restores encrypted config files from the             │
-$green│                Cloudbox Restore Service.                            │
-$green├─────────────────────────────────────────────────────────────────────┤
-$green│         Part of the Cloudbox project: https://cloudbox.works        │
+$green│                Saltbox Restore Service.                             │
 $green├─────────────────────────────────────────────────────────────────────┤
 $green│                  GNU General Public License v3.0                    │
 $green└─────────────────────────────────────────────────────────────────────┘
@@ -64,7 +51,7 @@ function validate_url(){
 # inputs
 USER=$1
 PASS=$2
-DIR=${3:-/srv/git/cloudbox}
+DIR=${3:-/srv/git/saltbox}
 
 # validate inputs
 if [ -z "$USER" ] || [ -z "$PASS" ]
