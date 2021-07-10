@@ -10,7 +10,7 @@
 ######################################################################################
 
 # vars
-files=( "ansible_vault" "ansible.cfg" "accounts.yml" "settings.yml" "adv_settings.yml" "backup_config.yml" "rclone.conf" "localhost.yml")
+files=( "ansible.cfg" "accounts.yml" "settings.yml" "adv_settings.yml" "backup_config.yml" "rclone.conf" "localhost.yml")
 restore="crs.saltbox.dev"
 folder="$HOME/.restore_service_tmp"
 green="\e[1;32m"
@@ -90,11 +90,8 @@ for file in "${files[@]}"
 do
         :
         # wget file
-        if [ "$file" ==  "ansible_vault" ]; then
-                printf '%-20.20s' ."$file"
-        else
-                printf '%-20.20s' "$file"
-        fi
+        printf '%-20.20s' "$file"
+
         URL=http://$restore/load/$USER_HASH/$file
         if validate_url $URL; then
             wget -qO $folder/$file.enc $URL
@@ -121,18 +118,13 @@ do
         :
         filename="$(basename -- $file .enc)"
         # wget file
-        if [ "$filename" ==  "ansible_vault" ]; then
-                printf '%-20.20s' ."$filename"
-        else
-                printf '%-20.20s' "$filename"
-        fi
+        printf '%-20.20s' "$filename"
+
         DECRYPT_RESULT=$(openssl enc -aes-256-cbc -d -salt -md md5 -in $folder/${filename}.enc -out $folder/$filename -k "$PASS" >/dev/null 2>&1)
         # was the file decryption successful?
         if [ -z "$DECRYPT_RESULT" ]; then
                 echo -e $done
                 rm $folder/${filename}.enc
-        elif [ "$filename" ==  "ansible_vault" ]; then
-                echo -e $ignore
         else
                 echo -e $fail
                 exit 1
@@ -149,25 +141,17 @@ do
         :
         # move file
         filename="$(basename -- $file)"
-        if [ "$filename" ==  "ansible_vault" ]; then
-                printf '%-20.20s' ."$filename"
-                if [ -f "$folder/$filename" ]; then
-                        mv $folder/$filename $HOME/.$filename 2>&1
-                        echo -e $done
-                else
-                        echo -e $ignore
-                fi
+
+        printf '%-20.20s' "$filename"
+        MOVE_RESULT=$(mv $folder/$filename $DIR/$filename 2>&1)
+        # was the decrypted file moved successfully?
+        if [ -z "$MOVE_RESULT" ]; then
+                echo -e $done
         else
-                printf '%-20.20s' "$filename"
-                MOVE_RESULT=$(mv $folder/$filename $DIR/$filename 2>&1)
-                # was the decrypted file moved successfully?
-                if [ -z "$MOVE_RESULT" ]; then
-                        echo -e $done
-                else
-                        echo -e $fail
-                        exit 1
-                fi
+                echo -e $fail
+                exit 1
         fi
+
 done
 
 echo ''
