@@ -120,7 +120,7 @@ do
         # wget file
         printf '%-20.20s' "$filename"
 
-        DECRYPT_RESULT=$(openssl enc -aes-256-cbc -d -pbkdf2 -in $folder/${filename}.enc -out $folder/$filename -k "$PASS" >/dev/null 2>&1)
+        DECRYPT_RESULT=$(openssl enc -aes-256-cbc -d -salt -md md5 -in $folder/${filename}.enc -out $folder/$filename -k "$PASS" >/dev/null 2>&1)
         # was the file decryption successful?
         if [ -z "$DECRYPT_RESULT" ]; then
                 echo -e $done
