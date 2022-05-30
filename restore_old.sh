@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ######################################################################################
 # Title:         Saltbox Restore Service: Restore Script                             #
-# Author(s):     l3uddz, desimaniac, saltydk                                         #
+# Author(s):     l3uddz, desimaniac, salty                                           #
 # URL:           https://github.com/saltyorg/saltbox                                 #
 # Description:   Restores encrypted config files from Saltbox Restore Service.       #
 # --                                                                                 #
@@ -39,7 +39,8 @@ $nc"
 # validate url
 # https://gist.github.com/hrwgc/7455343
 function validate_url(){
-  if [[ `wget -S --spider $1 2>&1 | grep 'HTTP/1.1 200 OK'` ]]; then
+  if wget -S --spider "$1" 2>&1 | grep -q 'HTTP/1.1 200 OK'
+  then
     return 0
   else
     return 1
@@ -61,18 +62,18 @@ then
 fi
 
 # validate folders exist
-TMP_FOLDER_RESULT=$(mkdir -p $folder)
-if [ ! -z "$TMP_FOLDER_RESULT" ]
+TMP_FOLDER_RESULT=$(mkdir -p "$folder")
+if [ -n "$TMP_FOLDER_RESULT" ]
 then
     echo "Failed to ensure $folder was created..."
     exit 1
 else
-   rm -rf $folder/*
+   rm -rf "${folder:?}/"*
 fi
 
 
-RESTORE_FOLDER_RESULT=$(mkdir -p $DIR)
-if [ ! -z "$RESTORE_FOLDER_RESULT" ]
+RESTORE_FOLDER_RESULT=$(mkdir -p "$DIR")
+if [ -n "$RESTORE_FOLDER_RESULT" ]
 then
     echo "Failed to ensure $DIR was created..."
     exit 1
@@ -93,18 +94,18 @@ do
         printf '%-20.20s' "$file"
 
         URL=http://$restore/load/$USER_HASH/$file
-        if validate_url $URL; then
-            wget -qO $folder/$file.enc $URL
+        if validate_url "$URL"; then
+            wget -qO "$folder"/"$file".enc "$URL"
             # is the file encrypted?
-            file_header=$(head -c 10 $folder/$file.enc | tr -d '\0')
+            file_header=$(head -c 10 "$folder"/"$file".enc | tr -d '\0')
             if [[ $file_header == Salted* ]]; then
-                    echo -e $done
+                    echo -e "$done"
             else
-                    echo -e $fail
+                    echo -e "$fail"
                     exit 1
             fi
         else
-          echo -e $ignore
+          echo -e "$ignore"
         fi
 done
 
@@ -113,20 +114,20 @@ echo ''
 # Decrypt files
 echo 'Decrypting fetched files...'
 echo ''
-for file in $folder/*
+for file in "$folder"/*
 do
         :
-        filename="$(basename -- $file .enc)"
+        filename="$(basename -- "$file" .enc)"
         # wget file
         printf '%-20.20s' "$filename"
 
-        DECRYPT_RESULT=$(openssl enc -aes-256-cbc -d -salt -md md5 -in $folder/${filename}.enc -out $folder/$filename -k "$PASS" >/dev/null 2>&1)
+        DECRYPT_RESULT=$(openssl enc -aes-256-cbc -d -salt -md md5 -in "$folder"/"${filename}".enc -out "$folder"/"$filename" -k "$PASS" >/dev/null 2>&1)
         # was the file decryption successful?
         if [ -z "$DECRYPT_RESULT" ]; then
-                echo -e $done
-                rm $folder/${filename}.enc
+                echo -e "$done"
+                rm "$folder"/"${filename}".enc
         else
-                echo -e $fail
+                echo -e "$fail"
                 exit 1
         fi
 done
@@ -136,19 +137,19 @@ echo ''
 # Move decrypted files
 echo 'Moving decrypted files...'
 echo ''
-for file in $folder/*
+for file in "$folder"/*
 do
         :
         # move file
-        filename="$(basename -- $file)"
+        filename="$(basename -- "$file")"
 
         printf '%-20.20s' "$filename"
-        MOVE_RESULT=$(mv $folder/$filename $DIR/$filename 2>&1)
+        MOVE_RESULT=$(mv "$folder"/"$filename" "$DIR"/"$filename" 2>&1)
         # was the decrypted file moved successfully?
         if [ -z "$MOVE_RESULT" ]; then
-                echo -e $done
+                echo -e "$done"
         else
-                echo -e $fail
+                echo -e "$fail"
                 exit 1
         fi
 
