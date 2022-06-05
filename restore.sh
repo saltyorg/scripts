@@ -93,7 +93,7 @@ do
         # wget file
         printf '%-20.20s' "$file"
 
-        URL=http://$restore/load/$USER_HASH/$file
+        URL=https://$restore/load/$USER_HASH/$file
         if validate_url "$URL"; then
             wget -qO "$folder"/"$file".enc "$URL"
             # is the file encrypted?
